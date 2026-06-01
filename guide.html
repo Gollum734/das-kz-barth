@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio-Guide</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="back-link">&larr; Zurück zur Übersicht</a>
+        <h1 id="station-title">Lädt...</h1>
+    </header>
+
+    <main class="container">
+        <div class="audio-section">
+            <audio id="audio-player" controls style="width: 100%; max-width: 500px; margin-bottom: 20px;">
+                Ihr Browser unterstützt das Audio-Element nicht.
+            </audio>
+            <p id="station-desc" style="text-align: left; font-size: 1.1rem; line-height: 1.7; white-space: pre-line;"></p>
+        </div>
+
+        <section id="gallery-section" style="display:none;">
+            <h2>Bilder zu dieser Station</h2>
+            <div class="gallery" id="station-gallery"></div>
+        </section>
+    </main>
+
+    <script>
+        // Stations-ID aus der URL holen (?id=station1)
+        const params = new URLSearchParams(window.location.search);
+        const stationId = params.get('id');
+
+        if (stationId) {
+            fetch(`stations/${stationId}/info.txt`)
+                .then(res => {
+                    if (!res.ok) throw new Error("Station nicht gefunden");
+                    return res.text();
+                })
+                .then(text => {
+                    const lines = text.split('\n');
+                    
+                    // 1. Titel & Beschreibung setzen
+                    document.getElementById('station-title').innerText = lines[0];
+                    document.getElementById('station-desc').innerText = lines[1] || '';
+
+                    // 2. Audio-Pfad setzen
+                    document.getElementById('audio-player').src = `stations/${stationId}/audio.mp3`;
+
+                    // 3. Bilder laden (aus Zeile 3 der info.txt)
+                    if (lines[2] && lines[2].trim() !== '') {
+                        const gallery = document.getElementById('station-gallery');
+                        const images = lines[2].split(',');
+
+                        images.forEach(imgName => {
+                            const trimmedName = imgName.trim();
+                            if (trimmedName) {
+                                const img = document.createElement('img');
+                                img.src = `stations/${stationId}/images/${trimmedName}`;
+                                img.alt = "Stationsbild";
+                                gallery.appendChild(img);
+                            }
+                        });
+                        document.getElementById('gallery-section').style.display = 'block';
+                    }
+                })
+                .catch(err => {
+                    document.getElementById('station-title').innerText = "Fehler";
+                    document.getElementById('station-desc').innerText = "Diese Station konnte nicht geladen werden.";
+                });
+        }
+    </script>
+</body>
+</html>
