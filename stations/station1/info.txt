@@ -1,4 +1,0 @@
-StationX: Terror und Solidarität
-"Beschreibung"
-audio.mp3
-picture1.jpg, picture2.jpg, picture3.jpg
