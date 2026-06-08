@@ -1,4 +1,4 @@
-StationX:X
-"Beschreibung"
-audio1.mp3, audio2.mp3
+StationX:Gyula Trebitsch
+In diesem Audioguide geht es um Gyula Trebitsch, er kam aus Ungarn und war ein ehemaliger KZ-Insasse. Ihr werdet viel über seinen Leidensweg und sein leben nach dem KZ erfahren. Triggerwarnung: Es geht um Zwangsarbeit, mentale und physische Leiden welche mit den menschenunwürdigen Umständen zusammenhängen.
+"Audio"
 "Bilder"
