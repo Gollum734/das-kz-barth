@@ -14,10 +14,11 @@
     </header>
 
     <main class="container">
+        <div class="audio-section" id="audio-container">
+            <p>Audio wird geladen...</p>
+        </div>
+
         <div class="audio-section">
-            <audio id="audio-player" controls style="width: 100%; max-width: 500px; margin-bottom: 20px;">
-                Ihr Browser unterstützt das Audio-Element nicht.
-            </audio>
             <p id="station-desc" style="text-align: left; font-size: 1.1rem; line-height: 1.7; white-space: pre-line;"></p>
         </div>
 
@@ -28,7 +29,6 @@
     </main>
 
     <script>
-        // Stations-ID aus der URL holen (?id=station1)
         const params = new URLSearchParams(window.location.search);
         const stationId = params.get('id');
 
@@ -45,13 +45,44 @@
                     document.getElementById('station-title').innerText = lines[0];
                     document.getElementById('station-desc').innerText = lines[1] || '';
 
-                    // 2. Audio-Pfad setzen
-                    document.getElementById('audio-player').src = `stations/${stationId}/audio.mp3`;
+                    // 2. Audio-Dateien dynamisch laden (Zeile 3)
+                    const audioContainer = document.getElementById('audio-container');
+                    audioContainer.innerHTML = ''; // Ladetext entfernen
 
-                    // 3. Bilder laden (aus Zeile 3 der info.txt)
                     if (lines[2] && lines[2].trim() !== '') {
+                        const audios = lines[2].split(',');
+
+                        audios.forEach(audioName => {
+                            const trimmedAudio = audioName.trim();
+                            if (trimmedAudio) {
+                                // Titel für den jeweiligen Track (z.B. "deutsch" statt "deutsch.mp3")
+                                const trackTitle = document.createElement('p');
+                                trackTitle.style.fontWeight = 'bold';
+                                trackTitle.style.marginBottom = '5px';
+                                trackTitle.innerText = trimmedAudio.replace('.mp3', '').toUpperCase();
+
+                                // Audio Player erstellen
+                                const player = document.createElement('audio');
+                                player.controls = true;
+                                player.preload = "metadata";
+                                player.playsinline = true;
+                                player.src = `stations/${stationId}/${trimmedAudio}`;
+                                player.style.width = "100%";
+                                player.style.maxWdth = "500px";
+                                player.style.marginBottom = "20px";
+
+                                audioContainer.appendChild(trackTitle);
+                                audioContainer.appendChild(player);
+                            }
+                        });
+                    } else {
+                        audioContainer.innerHTML = '<p>Keine Audio-Guides für diese Station verfügbar.</p>';
+                    }
+
+                    // 3. Bilder laden (Zeile 4)
+                    if (lines[3] && lines[3].trim() !== '') {
                         const gallery = document.getElementById('station-gallery');
-                        const images = lines[2].split(',');
+                        const images = lines[3].split(',');
 
                         images.forEach(imgName => {
                             const trimmedName = imgName.trim();
@@ -67,6 +98,7 @@
                 })
                 .catch(err => {
                     document.getElementById('station-title').innerText = "Fehler";
+                    document.getElementById('audio-container').innerHTML = '';
                     document.getElementById('station-desc').innerText = "Diese Station konnte nicht geladen werden.";
                 });
         }
