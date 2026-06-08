@@ -1,4 +1,4 @@
-StationX:X
+Station 6: Ernst Fleischer + Häftlingen ein Gesicht geben
 "Beschreibung"
 audio1.mp3, audio2.mp3
 "Bilder"
