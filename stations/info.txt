@@ -1,4 +1,4 @@
-StationX:Gyula Trebitsch
-In diesem Audioguide geht es um Gyula Trebitsch, er kam aus Ungarn und war ein ehemaliger KZ-Insasse. Ihr werdet viel über seinen Leidensweg und sein leben nach dem KZ erfahren. Triggerwarnung: Es geht um Zwangsarbeit, mentale und physische Leiden welche mit den menschenunwürdigen Umständen zusammenhängen.
-"Audio"
-"Bilder"
+StationX:X
+"Beschreibung"
+Das Leben von Ernst Fleischer.mp3, Den Häftlingen ein Gesicht geben.mp3
+picture1.jpeg, picture2.jpeg, picture3.jpeg, picture4.jpeg, picture5.jpeg, picture6.jpeg
