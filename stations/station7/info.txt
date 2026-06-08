@@ -1,0 +1,4 @@
+StationX:X
+"Beschreibung"
+audio1.mp3, audio2.mp3
+"Bilder"
