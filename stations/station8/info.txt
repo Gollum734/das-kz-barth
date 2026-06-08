@@ -1,4 +1,4 @@
 Station 7: Magda Goldmann + Hunger und Krankheit
 "Beschreibung"
 "Audio"
-picture1, picture2, picture3, picture4
+picture1.jpeg, picture2.jpeg, picture3.jpeg, picture4.jpeg
