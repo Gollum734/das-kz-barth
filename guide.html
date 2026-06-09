@@ -39,29 +39,36 @@
                     return res.text();
                 })
                 .then(text => {
-                    const lines = text.split('\n');
+                    const lines = text.split('\n').map(l => l.trim());
+                    
+                    const title = lines[0] || '';
+                    const rawDesc = lines[1] || '';
+                    
+                    // Jedes Semikolon wird hier in einen echten Zeilenumbruch umgewandelt
+                    const description = rawDesc.split(';').join('\n');
+                    
+                    const audioLine = lines[2] || '';
+                    const imageLine = lines[3] || '';
                     
                     // 1. Titel & Beschreibung setzen
-                    document.getElementById('station-title').innerText = lines[0];
-                    document.getElementById('station-desc').innerText = lines[1] || '';
+                    document.getElementById('station-title').innerText = title;
+                    document.getElementById('station-desc').innerText = description;
 
-                    // 2. Audio-Dateien dynamisch laden (Zeile 3)
+                    // 2. Audio-Dateien dynamisch laden
                     const audioContainer = document.getElementById('audio-container');
-                    audioContainer.innerHTML = ''; // Ladetext entfernen
+                    audioContainer.innerHTML = ''; 
 
-                    if (lines[2] && lines[2].trim() !== '') {
-                        const audios = lines[2].split(',');
+                    if (audioLine && audioLine.trim() !== '') {
+                        const audios = audioLine.split(',');
 
                         audios.forEach(audioName => {
                             const trimmedAudio = audioName.trim();
                             if (trimmedAudio) {
-                                // Titel für den jeweiligen Track (z.B. "deutsch" statt "deutsch.mp3")
                                 const trackTitle = document.createElement('p');
                                 trackTitle.style.fontWeight = 'bold';
                                 trackTitle.style.marginBottom = '5px';
                                 trackTitle.innerText = trimmedAudio.replace('.mp3', '').toUpperCase();
 
-                                // Audio Player erstellen
                                 const player = document.createElement('audio');
                                 player.controls = true;
                                 player.preload = "metadata";
@@ -79,10 +86,10 @@
                         audioContainer.innerHTML = '<p>Keine Audio-Guides für diese Station verfügbar.</p>';
                     }
 
-                    // 3. Bilder laden (Zeile 4)
-                    if (lines[3] && lines[3].trim() !== '') {
+                    // 3. Bilder laden
+                    if (imageLine && imageLine.trim() !== '') {
                         const gallery = document.getElementById('station-gallery');
-                        const images = lines[3].split(',');
+                        const images = imageLine.split(',');
 
                         images.forEach(imgName => {
                             const trimmedName = imgName.trim();
