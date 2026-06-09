@@ -9,7 +9,7 @@
 <body>
 
     <header>
-        <h1>Audioguides für das Konzentrationslager Barth</h1>
+        <h1>Dokumentationsstelle KZ-Außenlager Barth</h1>
         <p>Ein digitaler Begleiter durch die Gedenkstätte</p>
     </header>
 
@@ -33,30 +33,32 @@
 
             while (active) {
                 try {
-                    // Prüfen, ob der nächste Stationsordner existiert
                     const response = await fetch(`stations/station${i}/info.txt`);
                     
                     if (!response.ok) {
-                        active = false; // Stoppen, wenn Ordner nicht existiert
+                        active = false;
                         break;
                     }
 
                     const text = await response.text();
-                    const lines = text.split('\n');
+                    const lines = text.split('\n').map(l => l.trim());
+                    
                     const title = lines[0] || `Station ${i}`;
-                    const desc = lines[1] || '';
+                    const rawDesc = lines[1] || '';
+                    
+                    // Ersetzt das Semikolon für die Vorschau-Kachel durch ein Leerzeichen
+                    const description = rawDesc.split(';').join(' ');
 
-                    // Kachel für die Startseite erstellen
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
                         <h3>${title}</h3>
-                        <p>${desc.substring(0, 120)}...</p>
+                        <p>${description.substring(0, 120)}...</p>
                         <a href="guide.html?id=station${i}" class="btn">Guide öffnen</a>
                     `;
                     grid.appendChild(card);
                     
-                    i++; // Nächste Station prüfen
+                    i++;
                 } catch (error) {
                     active = false;
                 }
@@ -67,7 +69,6 @@
             }
         }
 
-        // Starten beim Laden der Seite
         loadStations();
     </script>
 </body>
